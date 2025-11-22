@@ -6,7 +6,18 @@ const pastTableBody = document.getElementById('pastTableBody');
 const futureTableBody = document.getElementById('futureTableBody');
 
 // State
-let currentLang = 'en'; // 'en' or 'da'
+let currentLang = navigator.language.startsWith('da') ? 'da' : 'en';
+console.log('Detected browser language:', navigator.language, '-> App language:', currentLang);
+
+// Analytics Config
+const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScSDy6fpUQ6qRHeKkCBubmmWRaBYk62YSQTQgWi4OfjHip8yQ/formResponse';
+const FORM_ENTRIES = {
+    action: 'entry.120135522',
+    userAgent: 'entry.270316851',
+    language: 'entry.1449451373',
+    screen: 'entry.119083653',
+    appName: 'entry.98806864'
+};
 
 // Translations
 const translations = {
@@ -95,9 +106,35 @@ function updateFromDateInputs() {
         const fullDateStr = `${dateVal}T${timeVal}`;
         const date = new Date(fullDateStr);
         excelInput.value = getExcelSerial(date);
+        debouncedLog('DateToExcel');
     } else {
         excelInput.value = '';
     }
+}
+
+// Analytics Logger
+function logToGoogle(action) {
+    const data = new FormData();
+    data.append(FORM_ENTRIES.action, action);
+    data.append(FORM_ENTRIES.userAgent, navigator.userAgent);
+    data.append(FORM_ENTRIES.language, navigator.language);
+    data.append(FORM_ENTRIES.screen, `${window.screen.width}x${window.screen.height}`);
+    data.append(FORM_ENTRIES.appName, 'SerialDateConverter');
+
+    fetch(GOOGLE_FORM_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Important to avoid CORS errors
+        body: data
+    }).catch(err => console.error('Logging failed', err));
+}
+
+// Debounce function to prevent spamming logs
+let debounceTimer;
+function debouncedLog(action) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        logToGoogle(action);
+    }, 2000); // Log after 2 seconds of inactivity
 }
 
 // Event Listeners
@@ -114,6 +151,7 @@ excelInput.addEventListener('input', (e) => {
 
         dateInput.value = `${year}-${month}-${day}`;
         timeInput.value = `${hours}:${minutes}`;
+        debouncedLog('ExcelToDate');
     } else {
         dateInput.value = '';
         timeInput.value = '00:00';
@@ -126,6 +164,7 @@ timeInput.addEventListener('input', updateFromDateInputs);
 langToggle.addEventListener('click', () => {
     currentLang = currentLang === 'en' ? 'da' : 'en';
     updateLanguage();
+    logToGoogle(`LanguageSwitch:${currentLang}`);
 });
 
 function updateLanguage() {
@@ -212,3 +251,4 @@ function renderTables() {
 // Init
 updateLanguage();
 dateInput.focus();
+logToGoogle('AppLoad');
