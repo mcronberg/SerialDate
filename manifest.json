@@ -1,5 +1,5 @@
 {
-    "name": "SerialDateConverter",
+    "name": "Serial Date Converter",
     "short_name": "SerialDate",
     "start_url": "./index.html",
     "display": "standalone",
