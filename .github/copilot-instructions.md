@@ -1,22 +1,26 @@
 # Copilot Instructions for Serial Date Converter
 
 ## Project Overview
-A Progressive Web App (PWA) that converts between Excel serial date numbers and human-readable dates. Single-page vanilla JavaScript application with i18n support (EN, DA, NO, SV, DE).
+A Progressive Web App (PWA) that converts between Excel serial date numbers and human-readable dates. Single-page vanilla JavaScript application with i18n support (EN, DA, NO, SV, DE). Deployed at https://mcronberg.github.io/serialdate/
 
 ## Architecture
 
 **Single-Page Static PWA Structure:**
 - `index.html` - Tailwind CSS UI with language toggle and bi-directional conversion inputs
-- `script.js` - All business logic, event handlers, i18n, and analytics
+- `script.js` - All business logic, event handlers, i18n, analytics, and copy-to-clipboard
 - `sw.js` - Service worker for offline capability and asset caching
 - `manifest.json` - PWA configuration for installability
+- `sitemap.xml` - SEO sitemap with hreflang alternatives
+- `robots.txt` - SEO crawler instructions
 
 **Core Components:**
 - Date ↔ Excel conversion utilities (`getExcelSerial()`, `getDateFromExcel()`)
 - Multi-language translation system with auto-detection (EN, DA, NO, SV, DE)
 - Light/Dark theme with system preference detection
+- Copy-to-clipboard functionality for Excel values (with visual feedback)
 - Reference tables showing relative dates (past/future)
 - Analytics via Google Forms (no-cors POST requests)
+- Comprehensive SEO meta tags (Open Graph, Twitter Card, JSON-LD structured data)
 
 ## Key Conventions
 
@@ -31,7 +35,7 @@ Always use UTC methods to avoid timezone issues.
 ### Version Synchronization
 **CRITICAL:** When making ANY changes to the application, ALWAYS increment the `VERSION` constant in BOTH `script.js` and `sw.js`. Service worker cache invalidation depends on this - users will not see changes without a version bump:
 ```javascript
-const VERSION = '1.4'; // ALWAYS update in BOTH files for ANY change
+const VERSION = '1.7'; // ALWAYS update in BOTH files for ANY change
 const CACHE_NAME = `serial-date-converter-v${VERSION}`;
 ```
 

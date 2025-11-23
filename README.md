@@ -2,7 +2,18 @@
 
 **Serial Date Converter** is a streamlined web utility designed for efficient conversion between Excel serial date numbers and standard date/time formats.
 
-🔗 **Launch Application:** [https://mcronberg.github.io/SerialDateConverter/](https://mcronberg.github.io/SerialDateConverter/)
+🔗 **Launch Application:** [https://mcronberg.github.io/serialdate/](https://mcronberg.github.io/serialdate/)
+
+## Features
+
+✅ **Bi-directional Conversion** - Convert dates to Excel serial numbers and vice versa  
+✅ **Copy to Clipboard** - Quick copy button for Excel values with visual feedback  
+✅ **Dark Mode** - Automatic system preference detection with manual toggle  
+✅ **Multi-Language** - 5 languages supported (EN, DA, NO, SV, DE)  
+✅ **Offline Support** - Works without internet connection (PWA)  
+✅ **Quick Reference** - Dynamic tables with common past/future dates  
+✅ **Mobile Friendly** - Responsive design for all devices  
+✅ **SEO Optimized** - Full meta tags and structured data
 
 ## Installation (PWA)
 
