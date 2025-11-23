@@ -1,0 +1,6 @@
+# Robots.txt for Serial Date Converter
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://serialdate.github.io/sitemap.xml

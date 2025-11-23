@@ -7,7 +7,9 @@ const ASSETS = [
     './style.css',
     './script.js',
     './manifest.json',
-    './assets/icon.png'
+    './assets/icon.png',
+    './robots.txt',
+    './sitemap.xml'
 ];
 
 // Install: Cache assets

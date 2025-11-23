@@ -4,7 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serial Date Converter</title>
+    <title>Serial Date Converter - Excel Date to Readable Date Converter</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Free online Excel serial date converter. Convert Excel date numbers to human-readable dates and vice versa. Works offline as PWA. Supports multiple languages.">
+    <meta name="keywords"
+        content="excel date converter, serial date, excel serial number, date converter, excel to date, date to excel, pwa, offline converter">
+    <meta name="author" content="Michell Cronberg">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://serialdate.github.io/">
+
+    <!-- Alternate Language Links -->
+    <link rel="alternate" hreflang="en" href="https://serialdate.github.io/">
+    <link rel="alternate" hreflang="da" href="https://serialdate.github.io/">
+    <link rel="alternate" hreflang="no" href="https://serialdate.github.io/">
+    <link rel="alternate" hreflang="sv" href="https://serialdate.github.io/">
+    <link rel="alternate" hreflang="de" href="https://serialdate.github.io/">
+    <link rel="alternate" hreflang="x-default" href="https://serialdate.github.io/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://serialdate.github.io/">
+    <meta property="og:title" content="Serial Date Converter - Excel Date Converter">
+    <meta property="og:description"
+        content="Free online Excel serial date converter. Convert Excel date numbers to human-readable dates and vice versa. Works offline as PWA.">
+    <meta property="og:image" content="https://serialdate.github.io/assets/icon.png">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://serialdate.github.io/">
+    <meta name="twitter:title" content="Serial Date Converter - Excel Date Converter">
+    <meta name="twitter:description"
+        content="Free online Excel serial date converter. Convert Excel date numbers to human-readable dates and vice versa.">
+    <meta name="twitter:image" content="https://serialdate.github.io/assets/icon.png">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SerialDate">
+    <link rel="apple-touch-icon" href="assets/icon.png">
 
     <!-- Preconnect to CDNs for faster loading -->
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
@@ -16,8 +57,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="assets/icon.png">
-    <meta name="theme-color" content="#020617">
-    <meta name="description" content="Convert Excel dates to human readable dates and vice versa.">
     <script>
         // Dark mode initialization - use system preference by default
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -30,6 +69,41 @@
         tailwind.config = {
             darkMode: 'class'
         }
+    </script>
+
+    <!-- Structured Data / Schema.org for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Serial Date Converter",
+        "description": "Free online Excel serial date converter. Convert Excel date numbers to human-readable dates and vice versa. Works offline as a Progressive Web App.",
+        "url": "https://serialdate.github.io/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Michell Cronberg",
+            "url": "https://github.com/mcronberg"
+        },
+        "inLanguage": ["en", "da", "no", "sv", "de"],
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "softwareVersion": "1.6",
+        "screenshot": "https://serialdate.github.io/assets/icon.png",
+        "featureList": [
+            "Convert Excel serial dates to readable dates",
+            "Convert dates to Excel serial numbers",
+            "Offline support (PWA)",
+            "Multi-language support (EN, DA, NO, SV, DE)",
+            "Dark mode support",
+            "Quick reference tables"
+        ]
+    }
     </script>
 </head>
 
@@ -62,7 +136,7 @@
                         d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
             </button>
-            <a href="https://github.com/mcronberg/SerialDateConverter" target="_blank" rel="noopener noreferrer"
+            <a href="https://github.com/mcronberg/serialdate.github.io" target="_blank" rel="noopener noreferrer"
                 class="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
                 title="View on GitHub">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"
