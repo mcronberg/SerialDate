@@ -4,9 +4,10 @@ const timeInput = document.getElementById('timeInput');
 const langToggle = document.getElementById('langToggle');
 const pastTableBody = document.getElementById('pastTableBody');
 const futureTableBody = document.getElementById('futureTableBody');
+const copyExcelBtn = document.getElementById('copyExcelBtn');
 
 // Version (IMPORTANT: Also update VERSION in sw.js when changing this!)
-const VERSION = '1.5';
+const VERSION = '1.6';
 
 // State
 let currentLang = 'en';
@@ -48,7 +49,8 @@ const translations = {
         refInMonth: 'In a month',
         refEndOfYear: 'End of year',
         refStartOfNextYear: 'Start of next year',
-        refEndOfNextYear: 'End of next year'
+        refEndOfNextYear: 'End of next year',
+        copied: 'Copied!'
     },
     da: {
         title: `Serial Date Converter v${VERSION}`,
@@ -71,7 +73,8 @@ const translations = {
         refInMonth: 'Om en måned',
         refEndOfYear: 'Slutningen af året',
         refStartOfNextYear: 'Starten af næste år',
-        refEndOfNextYear: 'Slutningen af næste år'
+        refEndOfNextYear: 'Slutningen af næste år',
+        copied: 'Kopieret!'
     },
     sv: {
         title: `Serial Date Converter v${VERSION}`,
@@ -94,7 +97,8 @@ const translations = {
         refInMonth: 'Om en månad',
         refEndOfYear: 'Årets slut',
         refStartOfNextYear: 'Nästa års början',
-        refEndOfNextYear: 'Nästa års slut'
+        refEndOfNextYear: 'Nästa års slut',
+        copied: 'Kopierad!'
     },
     de: {
         title: `Serial Date Converter v${VERSION}`,
@@ -117,7 +121,8 @@ const translations = {
         refInMonth: 'In einem Monat',
         refEndOfYear: 'Jahresende',
         refStartOfNextYear: 'Beginn nächstes Jahr',
-        refEndOfNextYear: 'Ende nächstes Jahr'
+        refEndOfNextYear: 'Ende nächstes Jahr',
+        copied: 'Kopiert!'
     },
     no: {
         title: `Serial Date Converter v${VERSION}`,
@@ -140,7 +145,8 @@ const translations = {
         refInMonth: 'Om en måned',
         refEndOfYear: 'Årets slutt',
         refStartOfNextYear: 'Neste års begynnelse',
-        refEndOfNextYear: 'Neste års slutt'
+        refEndOfNextYear: 'Neste års slutt',
+        copied: 'Kopiert!'
     }
 };
 
@@ -216,10 +222,18 @@ function updateFromDateInputs() {
     if (dateVal) {
         const fullDateStr = `${dateVal}T${timeVal}`;
         const date = new Date(fullDateStr);
-        excelInput.value = getExcelSerial(date);
+        const serial = getExcelSerial(date);
+        excelInput.value = serial;
+        
+        // Show copy button when value exists
+        if (serial) {
+            copyExcelBtn.classList.remove('opacity-0', 'pointer-events-none');
+        }
+        
         debouncedLog('DateToExcel');
     } else {
         excelInput.value = '';
+        copyExcelBtn.classList.add('opacity-0', 'pointer-events-none');
     }
 }
 
@@ -266,10 +280,15 @@ excelInput.addEventListener('input', (e) => {
 
         dateInput.value = `${year}-${month}-${day}`;
         timeInput.value = `${hours}:${minutes}`;
+        
+        // Show copy button
+        copyExcelBtn.classList.remove('opacity-0', 'pointer-events-none');
+        
         debouncedLog('ExcelToDate');
     } else {
         dateInput.value = '';
         timeInput.value = '00:00';
+        copyExcelBtn.classList.add('opacity-0', 'pointer-events-none');
     }
 });
 
@@ -420,6 +439,45 @@ function renderTables() {
     pastRows.forEach(key => pastTableBody.appendChild(createRow(key)));
     futureRows.forEach(key => futureTableBody.appendChild(createRow(key)));
 }
+
+// Copy to Clipboard Function
+async function copyToClipboard(text, button) {
+    try {
+        await navigator.clipboard.writeText(text);
+        
+        // Visual feedback - change to checkmark
+        const originalHTML = button.innerHTML;
+        button.innerHTML = `
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        `;
+        button.classList.add('text-teal-600', 'dark:text-teal-400');
+        
+        // Reset after 1.5s
+        setTimeout(() => {
+            button.innerHTML = originalHTML;
+            button.classList.remove('text-teal-600', 'dark:text-teal-400');
+        }, 1500);
+        
+        logToGoogle('CopyToClipboard');
+    } catch (error) {
+        // Fallback for older browsers
+        const input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+    }
+}
+
+// Copy Button Event Listener
+copyExcelBtn.addEventListener('click', () => {
+    if (excelInput.value) {
+        copyToClipboard(excelInput.value, copyExcelBtn);
+    }
+});
 
 // Theme Toggle
 const themeToggle = document.getElementById('themeToggle');
