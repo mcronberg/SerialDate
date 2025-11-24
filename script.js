@@ -7,7 +7,7 @@ const futureTableBody = document.getElementById('futureTableBody');
 const copyExcelBtn = document.getElementById('copyExcelBtn');
 
 // Version (IMPORTANT: Also update VERSION in sw.js when changing this!)
-const VERSION = '1.9';
+const VERSION = '2.0';
 
 // State
 let currentLang = localStorage.language || 'en';
@@ -404,8 +404,14 @@ function createRow(key) {
     td1.textContent = translations[currentLang][key];
 
     const td2 = document.createElement('td');
-    td2.className = 'px-4 py-3 text-right font-mono text-teal-600 dark:text-teal-400';
+    td2.className = 'px-4 py-3 text-right font-mono text-teal-600 dark:text-teal-400 cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors';
     td2.textContent = excel;
+    td2.title = 'Copy to clipboard';
+    
+    // Add click event to copy Excel value
+    td2.addEventListener('click', async function() {
+        await copyToClipboardFromTable(excel, this);
+    });
 
     const td3 = document.createElement('td');
     td3.className = 'px-4 py-3 text-right text-slate-600 dark:text-slate-400';
@@ -473,6 +479,48 @@ async function copyToClipboard(text, button) {
         input.select();
         document.execCommand('copy');
         document.body.removeChild(input);
+    }
+}
+
+// Copy to Clipboard from Table Cell
+async function copyToClipboardFromTable(text, cell) {
+    try {
+        await navigator.clipboard.writeText(text);
+
+        // Visual feedback - store original content and temporarily show checkmark
+        const originalText = cell.textContent;
+        const originalClasses = cell.className;
+        
+        // Show checkmark icon
+        cell.innerHTML = `
+            <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        `;
+        cell.className = 'px-4 py-3 text-right font-mono text-teal-600 dark:text-teal-400 transition-colors';
+
+        // Reset after 1s
+        setTimeout(() => {
+            cell.textContent = originalText;
+            cell.className = originalClasses;
+        }, 1000);
+
+        logToGoogle('CopyFromQuickReference');
+    } catch (error) {
+        // Fallback for older browsers
+        const input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        
+        // Still show visual feedback on fallback
+        const originalText = cell.textContent;
+        cell.textContent = '✓';
+        setTimeout(() => {
+            cell.textContent = originalText;
+        }, 1000);
     }
 }
 
