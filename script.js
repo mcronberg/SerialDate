@@ -250,9 +250,9 @@ function parseDateString(str, locale) {
             const usMatch = datePart.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
             if (usMatch) {
                 const [, month, day, year] = usMatch;
-                return { 
-                    date: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`, 
-                    time: timePart 
+                return {
+                    date: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`,
+                    time: timePart
                 };
             }
         } else {
@@ -260,9 +260,9 @@ function parseDateString(str, locale) {
             const euMatch = datePart.match(/^(\d{1,2})[\.\-\/](\d{1,2})[\.\-\/](\d{4})/);
             if (euMatch) {
                 const [, day, month, year] = euMatch;
-                return { 
-                    date: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`, 
-                    time: timePart 
+                return {
+                    date: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`,
+                    time: timePart
                 };
             }
         }
@@ -282,10 +282,10 @@ function updateFromDateInputs() {
         const date = new Date(fullDateStr);
         const serial = getExcelSerial(date);
         // Force US locale formatting with dot as decimal separator
-        excelInput.value = Number(serial).toLocaleString('en-US', { 
-            useGrouping: false, 
+        excelInput.value = Number(serial).toLocaleString('en-US', {
+            useGrouping: false,
             minimumFractionDigits: 0,
-            maximumFractionDigits: 20 
+            maximumFractionDigits: 20
         });
 
         // Show copy button when value exists
@@ -379,7 +379,7 @@ dateInput.addEventListener('paste', (e) => {
     e.preventDefault();
     const pastedText = (e.clipboardData || window.clipboardData).getData('text');
     const parsed = parseDateString(pastedText, currentLang);
-    
+
     if (parsed) {
         dateInput.value = parsed.date;
         timeInput.value = parsed.time;
@@ -394,7 +394,7 @@ dateInput.addEventListener('paste', (e) => {
 timeInput.addEventListener('paste', (e) => {
     const pastedText = (e.clipboardData || window.clipboardData).getData('text');
     const parsed = parseDateString(pastedText, currentLang);
-    
+
     if (parsed && parsed.date) {
         e.preventDefault();
         dateInput.value = parsed.date;
@@ -516,9 +516,9 @@ function createRow(key) {
     td2.className = 'px-4 py-3 text-right font-mono text-teal-600 dark:text-teal-400 cursor-pointer hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors';
     td2.textContent = excel;
     td2.title = 'Copy to clipboard';
-    
+
     // Add click event to copy Excel value
-    td2.addEventListener('click', async function() {
+    td2.addEventListener('click', async function () {
         await copyToClipboardFromTable(excel, this);
     });
 
@@ -599,7 +599,7 @@ async function copyToClipboardFromTable(text, cell) {
         // Visual feedback - store original content and temporarily show checkmark
         const originalText = cell.textContent;
         const originalClasses = cell.className;
-        
+
         // Show checkmark icon
         cell.innerHTML = `
             <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -623,7 +623,7 @@ async function copyToClipboardFromTable(text, cell) {
         input.select();
         document.execCommand('copy');
         document.body.removeChild(input);
-        
+
         // Still show visual feedback on fallback
         const originalText = cell.textContent;
         cell.textContent = '✓';
